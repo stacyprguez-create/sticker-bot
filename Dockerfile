@@ -1,10 +1,15 @@
-FROM node:20-slim
+FROM node:20-bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PORT=7860
 WORKDIR /app
 
 COPY package.json ./
-RUN npm install --omit=dev
+RUN npm install --omit=dev --no-audit --no-fund
 
 COPY . .
 
